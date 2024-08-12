@@ -4,9 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Getter @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -41,20 +40,23 @@ public class FileGrabber {
     public void seleccionarArchivos(){
         boolean enSeleccion = true;
         Scanner entradaTeclado = new Scanner(System.in);
-
+        List<String> archivosElejidos = new ArrayList<String>();
+        Map<Integer, String> entradas = this.traerArchvos();
 
         while (enSeleccion){
             System.out.println("Elija un archivo para agregar a la lista del procesador.");
             System.out.println("Use el número 0 para terminar.");
-            for (Map.Entry<Integer, String> entrada : this.traerArchvos().entrySet()){
-                System.out.println(entrada.getKey() + " - " + entrada.getValue());
+            for (Map.Entry<Integer, String> entrada : entradas.entrySet()){
+                System.out.println(entrada.getKey() + " - " +
+                        Paths.get(entrada.getValue()).getFileName().toString());
             }
             int seleccion = entradaTeclado.nextInt();
 
             if (seleccion == 0){
                 enSeleccion = false;
             }else{
-
+                archivosElejidos.add(entradas.get(seleccion));
+                entradas.remove(seleccion);
             }
 
         }
