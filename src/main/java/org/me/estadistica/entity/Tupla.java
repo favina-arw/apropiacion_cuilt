@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Tupla {
 
@@ -27,8 +29,10 @@ public class Tupla {
 
     char sexo;
 
-    public Tupla(String tipoDocumento, String numeroDocumento, String apellidoNombre, String sexo, String fechaNacimiento,
-                 String calle, String numero, String piso, String depto, String codigoPostal, String localidad, String codigoProvincia) {
+    public Tupla(String tipoDocumento, String numeroDocumento, String apellidoNombre,
+                 String sexo, String fechaNacimiento,
+                 String calle, String numero, String piso,
+                 String depto, String codigoPostal, String localidad, String codigoProvincia) {
         this.tipoDocumento = this.agregarCerosAdelante(tipoDocumento, 2);
         this.numeroDocumento = this.agregarCerosAdelante(numeroDocumento, 8);
         this.apellidoNombre = this.agregarEspaciosAlFinal(apellidoNombre, 40);
