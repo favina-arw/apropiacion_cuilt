@@ -37,29 +37,39 @@ public class FileGrabber {
         return mapa;
     }
 
-    public void seleccionarArchivos(){
+    public List<String> seleccionarArchivos() {
         boolean enSeleccion = true;
         Scanner entradaTeclado = new Scanner(System.in);
         List<String> archivosElejidos = new ArrayList<String>();
         Map<Integer, String> entradas = this.traerArchvos();
 
-        while (enSeleccion){
+        while (enSeleccion) {
+
+            if (entradas.isEmpty()) {
+                System.err.println("Lista de archivos está vacía, se procederá a procesar lo seleccionado.");
+                return archivosElejidos;
+            }
+
             System.out.println("Elija un archivo para agregar a la lista del procesador.");
             System.out.println("Use el número 0 para terminar.");
-            for (Map.Entry<Integer, String> entrada : entradas.entrySet()){
+            for (Map.Entry<Integer, String> entrada : entradas.entrySet()) {
                 System.out.println(entrada.getKey() + " - " +
                         Paths.get(entrada.getValue()).getFileName().toString());
             }
             int seleccion = entradaTeclado.nextInt();
 
-            if (seleccion == 0){
+            if (seleccion == 0) {
                 enSeleccion = false;
-            }else{
+            } else if (entradas.get(seleccion) == null) {
+                System.err.println("Por favor, elija los archivos que se encuentran entre las opciones disponibles");
+            } else {
                 archivosElejidos.add(entradas.get(seleccion));
                 entradas.remove(seleccion);
             }
-
         }
+
+        return archivosElejidos;
     }
+
 
 }
