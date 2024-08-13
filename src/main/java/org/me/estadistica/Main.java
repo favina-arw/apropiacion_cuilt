@@ -11,10 +11,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        /*
+       /*
         Tupla tupla = new Tupla(
                 TipoDni.DOCUMENTO_UNICO.getCodigoString(),
-                "38080929",
                 "Viña Federico",
                 "masculino",
                 "17/06/1994",
@@ -30,7 +29,11 @@ public class Main {
         logger.info(String.valueOf(tupla.toString().length()));
         */
 
-        /* Pruebas de FileGrabber */
+        /* Pruebas de FileGrabber
+        *
+        * La idea es que la ruta para el FileGrabber sea tomada de los argumentos
+        *
+        *  */
 
         FileGrabber fileGrabber = new FileGrabber("C:/Users/Admin/Estadistica_2024/archivos para procesar");
 
