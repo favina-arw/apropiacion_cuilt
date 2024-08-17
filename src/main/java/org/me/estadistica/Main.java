@@ -1,47 +1,69 @@
 package org.me.estadistica;
 
-
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.me.estadistica.entity.Tupla;
-import org.me.estadistica.enums.Provincia;
-import org.me.estadistica.enums.TipoDni;
-import org.me.estadistica.utils.FileGrabber;
 
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Array;
+import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) {
+        String rutaAlArchivo = "C:/Users/Admin/Downloads/Reporte_Alumnos_20240814104723_795.xls";
+        try {
 
-       /*
-        Tupla tupla = new Tupla(
-                TipoDni.DOCUMENTO_UNICO.getCodigoString(),
-                "Viña Federico",
-                "masculino",
-                "17/06/1994",
-                "Calle Falsa",
-                "666",
-                "11",
-                "C",
-                "9103",
-                "Rawson",
-                Provincia.CHUBUT.getCodigoString());
+            POIFSFileSystem fs = new POIFSFileSystem(new File(rutaAlArchivo));
+            HSSFWorkbook libro = new HSSFWorkbook(fs.getRoot(),true);
+            Sheet hoja = libro.getSheetAt(0);
 
-        logger.info(tupla.toString()+ "-fin");
-        logger.info(String.valueOf(tupla.toString().length()));
-        */
+            Row filaDatosEscuela = hoja.getRow(1);
+            Row cabeceras = hoja.getRow(2);
+            Row data = hoja.getRow(3);
 
-        /* Pruebas de FileGrabber
-        *
-        * La idea es que la ruta para el FileGrabber sea tomada de los argumentos
-        *
-        *  */
+            String datosEscuela = hoja.getRow(1).getCell(0).getStringCellValue();
+            String cabeceraUno = hoja.getRow(2).getCell(0).getStringCellValue();
+            String datoUno = hoja.getRow(3).getCell(0).getStringCellValue();
 
-        FileGrabber fileGrabber = new FileGrabber("C:/Users/Admin/Estadistica_2024/archivos para procesar");
+            String[] usefulData = new String[]{};
 
-        List<String> archivos = fileGrabber.seleccionarArchivos();
+            for (int i = 3 ; i <= hoja.getLastRowNum() ;i++){
+                Row fila = hoja.getRow(i);
+                for (int j = 0; j <= fila.getLastCellNum(); j++){
+                    Cell celda = fila.getCell(j);
 
-        for(String s : archivos){
-            System.out.println(s);
+                    switch (celda.getColumnIndex()){
+                        case 0:
+                            usefulData[0] = celda.getStringCellValue().replace(",","");
+                            break;
+                        case 1:
+                            usefulData[1] = celda.getStringCellValue();
+                            break;
+                    }
+                }
+
+            }
+
+
+
+            /*---- CERRDADO DE ARCHIVO ----*/
+            fs.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
 
     }
 }
