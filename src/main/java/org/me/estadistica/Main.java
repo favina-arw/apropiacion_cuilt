@@ -22,13 +22,22 @@ public class Main {
         try {
 
             FileGrabber fg = new FileGrabber();
+            String rutaDestino = "";
 
             if(args.length == 0){
                 Scanner input = new Scanner(System.in);
-                System.out.println("Ingrese la ruta absoluta donde se encuentran los archivos");
+                System.out.println("Ingrese la ruta absoluta donde se encuentran los archivos a leer");
                 fg.setPathToFiles(input.nextLine());
+                System.out.println("Ingrese la ruta absoluta donde se deba depositar el archivo resulante");
+                rutaDestino = input.nextLine();
+                System.out.println(rutaDestino);
+                if (rutaDestino.charAt(rutaDestino.length()-1) != '/'){
+                    rutaDestino.concat("/");
+                }
+                System.out.println(rutaDestino);
             }else{
                 fg.setPathToFiles(args[0]);
+                rutaDestino = args[1];
             }
 
             List<String> archivos = fg.seleccionarArchivos();
@@ -37,8 +46,11 @@ public class Main {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyMMdd");
             String hoy = fechaActual.format(formato);
 
+            //rutaDestino+"/APRO.CE.XX."+hoy+".txt"
+
             BufferedWriter escritor = new BufferedWriter(
-                    new FileWriter("C:/Users/Admin/Desktop/pruebas_apropiacion/APRO.CE.XX."+hoy+".txt"));
+                            new OutputStreamWriter(
+                            new FileOutputStream(rutaDestino+"/APRO.CE.XX."+hoy+".txt"),"Windows-1252"));
 
             for (String rutaAlArchivo : archivos){
                 POIFSFileSystem fs = new POIFSFileSystem(new File(rutaAlArchivo));
@@ -102,17 +114,12 @@ public class Main {
                     alumno.setEscuelaCueAnexo(StringUtils.left(datosEscuela,9));
 
                     escritor.write(alumno.toString());
-
-
                 }
-
-                System.out.println(alumno.getEscuelaCueAnexo());
 
                 /*---- CERRDADO DE ARCHIVO DE LECTURA----*/
                 fs.close();
 
             }
-
 
             /*---- CERRDADO DE ARCHIVO DE ESCRITURA----*/
             escritor.close();

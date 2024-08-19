@@ -19,7 +19,7 @@ public class Alumno {
     @NonNull
     final String fechaFallecimiento = "00000000";
     @NonNull
-    final String filler = "           ";
+    final String filler = "          \n";
 
     @NonNull
     String tipoDocumento, numeroDocumento, apellidoNombre, fechaNacimiento;
@@ -91,7 +91,7 @@ public class Alumno {
     }
 
     public void setEscuelaCueAnexo(String escuelaCueAnexo) {
-        this.escuelaCueAnexo = escuelaCueAnexo;
+        this.escuelaCueAnexo = this.agregarCerosAdelante(escuelaCueAnexo, 9);
     }
 
     public void setAnio(String anio) {
