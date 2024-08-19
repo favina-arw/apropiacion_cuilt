@@ -19,7 +19,7 @@ public class Alumno {
     @NonNull
     final String fechaFallecimiento = "00000000";
     @NonNull
-    final String filler = "          \n";
+    final String filler = "          \r\n";
 
     @NonNull
     String tipoDocumento, numeroDocumento, apellidoNombre, fechaNacimiento;
